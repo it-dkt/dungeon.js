@@ -1,0 +1,127 @@
+/* maze.css */
+*    { margin:0; padding:0; text-align:center; }
+body {
+	background-color:black;
+	color:white;
+}
+
+/**/
+#controller-container {
+/*	display: flex;
+	align-items: center;*/
+	position: absolute;
+	left: 16px;
+	top: 320px;
+}
+
+#up-key-container {
+	display: flex;
+	justify-content: center;
+}
+
+#horizonal-key-container {
+	display: flex;
+	flex-direction: row;
+
+}
+
+#down-key-container {
+	display: flex;
+	justify-content: center;	
+}
+
+#up-key {
+	position: relative;
+	background-image: url("./controller-img/up-key.png");
+	display: block;
+	height: 24px;
+	width: 48px;
+	
+}
+
+#left-key {
+	float:left;
+	background-image: url("./controller-img/left-key.png");
+	position: relative;
+	height: 24px;
+	width: 48px;
+	display: inline-block;
+}
+
+#right-key {
+	float:left;
+	position: relative;
+	background-image: url("./controller-img/right-key.png");
+	height: 24px;
+	width: 48px;
+	margin-left: 16px;
+	display: inline-block;
+}
+
+#down-key {
+	position: relative;
+	background-image: url("./controller-img/down-key.png");
+	height: 24px;
+	width: 48px;
+}
+
+/* Message box */
+#messageArea {
+  position: absolute;
+  left: 32px;
+  top: 16px;
+  width: 256px;
+  height: 256px;
+  z-index: 20;
+  font-size: 14px;
+  border: 3px outset;
+  opacity: 0.9;
+  background-color: #336;
+  color: white;
+  
+}
+#messageArea h3 {
+  background-color: #937;
+  color: white;
+  padding: 6px;
+}
+#messageArea div {
+  padding: 10px;
+  text-align: left;
+}
+#messageArea .center {
+  text-align: center;
+}
+
+#mapCanvas {
+  z-index: 1;
+  position: absolute;
+  left: 16px;
+  top: 0px;
+}
+
+#charCanvas {
+  z-index: 2;
+  position: absolute;
+  left: 144px; /* 128 + 16 */
+  top: 128px;
+}
+
+#enemyCanvas {
+  z-index: 3;
+  position: absolute;
+  left: 16px;
+  top: 0px;
+}
+
+.shake {
+    animation: kf-shake .1s  ;
+}
+
+@keyframes kf-shake {
+    0% {transform: translate(0px, 0px) rotateZ(0deg)}
+    25% {transform: translate(2px, 2px) rotateZ(1deg)}
+    50% {transform: translate(0px, 2px) rotateZ(0deg)}
+    75% {transform: translate(2px, 0px) rotateZ(-1deg)}
+    100% {transform: translate(0px, 0px) rotateZ(0deg)}
+}
