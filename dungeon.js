@@ -24,7 +24,6 @@ let isShowingMessage = false;
 
 //----------------------------------------------------------
 window.onload = function () {
-	config();
 	checkDeviceOrientation();
 	loadImages();
 	// add keydown event handler
@@ -57,7 +56,7 @@ function createDirectionKeyEvent(element) {
 
 function loadImages() {
 	showMessage("Now loading",
-	"<img src='../loader.gif'> Wait a moment...");
+	"<img src='../controller-img/loader.gif'> Wait a moment...");
 
 	numLoadedFiles = 0;
 
@@ -72,7 +71,7 @@ function loadImages() {
 	};
 	
 	// load tip images
-	imgMap = loadImage("../img/map.png", file_onload);
+	imgMap = loadImage("../img/" + MAP_IMAGE_FILENAME, file_onload);
 	imgPlayer = loadImage("../img/player.png", file_onload);
 	for(var i=0; i<ENEMY_IMAGES.length; i++){
 		imgEnemies[i] = loadImage("../img/" + ENEMY_IMAGES[i], file_onload);
@@ -196,7 +195,7 @@ function movePlayer(px, py) {
 	checkCollision();
 	
 	// exec position event
-	if (eventData[event_no].hasEvent)
+	if (eventData[event_no].hasMessage)
 	{
 		// exec dispatcher function if defined, returns event number to execute
 		if(typeof(eventData[event_no].dispatcher) == "function") {

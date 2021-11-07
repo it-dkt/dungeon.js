@@ -1,7 +1,7 @@
 const startMessage = 'Escape from this dungeon.<br>Don\'t be catched by the monster!';
 
 const restartGame = function() {
-	document.location.reload;
+	document.location.href = '../index.html';
 }
 
 const onGameClear = function(){
@@ -79,24 +79,24 @@ const fNotWalkable = function(){ return false; }
 //
 const eventData = {};
 // floor
-eventData[0] = { getTile: function(){ return 0 }, isWalkable: fWalkable, hasEvent: false, title: '', msg: '', onClose: function(){} };
+eventData[0] = { getTile: function(){ return 0 }, isWalkable: fWalkable, hasMessage: false, title: '', msg: '', onClose: function(){} };
 // wall
-eventData[1] = { getTile: function(){ return 1 }, isWalkable: fNotWalkable, hasEvent: false, title: '', msg: '', onClose: function(){} };
+eventData[1] = { getTile: function(){ return 1 }, isWalkable: fNotWalkable, hasMessage: false, title: '', msg: '', onClose: function(){} };
 
 // boards
-eventData[2] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasEvent: true, dispatcher: null, title: 'board', msg: 'There are three stone boards in this dungeon', onClose: onRead1 };
-eventData[3] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasEvent: true, dispatcher: null, title: 'board', msg: 'You need a key to open a door.', onClose: onRead2 };
-eventData[4] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasEvent: true, dispatcher: null, title: 'board', msg: 'If you have read all the boards, you have a way.', onClose: onRead3 };
+eventData[2] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasMessage: true, dispatcher: null, title: 'board', msg: 'There are three stone boards in this dungeon', onClose: onRead1 };
+eventData[3] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasMessage: true, dispatcher: null, title: 'board', msg: 'You need a key to open a door.', onClose: onRead2 };
+eventData[4] = { getTile:  function(){ return 2 }, isWalkable: fNotWalkable, hasMessage: true, dispatcher: null, title: 'board', msg: 'If you have read all the boards, you have a way.', onClose: onRead3 };
 
 // wall could be collapse
-eventData[5] = { getTile:  getWallOrFloorTile, isWalkable: function(){ return isCollpsed; }, hasEvent: false, dispatcher: null, title: '', msg: '', onClose: function(){} };
+eventData[5] = { getTile:  getWallOrFloorTile, isWalkable: function(){ return isCollpsed; }, hasMessage: false, dispatcher: null, title: '', msg: '', onClose: function(){} };
 
 // treasure box (not opened yet)
-eventData[6] = { getTile:  getTreasureTile, isWalkable: fNotWalkable, hasEvent: true, dispatcher: dispatcher_treasure, title: 'treasure box', msg: 'You found a key in the box!', onClose: function(){ hasKey = true; drawMap(); } };
+eventData[6] = { getTile:  getTreasureTile, isWalkable: fNotWalkable, hasMessage: true, dispatcher: dispatcher_treasure, title: 'treasure box', msg: 'You found a key in the box!', onClose: function(){ hasKey = true; drawMap(); } };
 // treasure box (open)
-eventData[7] = { getTile:  getTreasureTile, isWalkable: fNotWalkable, hasEvent: false, dispatcher: null, title: 'treasure box', msg: 'There is nothing in the box any more.', onClose: function(){} };
+eventData[7] = { getTile:  getTreasureTile, isWalkable: fNotWalkable, hasMessage: false, dispatcher: null, title: 'treasure box', msg: 'There is nothing in the box any more.', onClose: function(){} };
 
 // door (when the player don't have the key)
-eventData[8] = { getTile:  function(){ return 5 }, isWalkable: fNotWalkable, hasEvent: true, dispatcher: dispatcher_door, title: 'door', msg: 'The door seems to be locked.', onClose: function(){} };
+eventData[8] = { getTile:  function(){ return 5 }, isWalkable: fNotWalkable, hasMessage: true, dispatcher: dispatcher_door, title: 'door', msg: 'The door seems to be locked.', onClose: function(){} };
 // door (when the player has the key)
-eventData[9] = { getTile:  function(){ return 5 }, isWalkable: fNotWalkable, hasEvent: true, dispatcher: dispatcher_door, title: 'door', msg: 'You opened the door!', onClose: onGameClear };
+eventData[9] = { getTile:  function(){ return 5 }, isWalkable: fNotWalkable, hasMessage: true, dispatcher: dispatcher_door, title: 'door', msg: 'You opened the door!', onClose: onGameClear };
