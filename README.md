@@ -29,7 +29,7 @@ The location of your game. There are some script links. In most cases, you only 
 *Changing the order of script tag may leads some javascript errors*. So, be carefull.
 #### my-map-data.js
 The array 'mapData' is defined in this file. The array has length of MAP_ROWS x MAP_COLS. <br>
-Each element of the array indicates the position in the map.If you need more wide map, increase MAP_ROWS and MAP_COLS value.<br>
+Each element of the array indicates the position in the map. If you need more wide map, increase MAP_ROWS and MAP_COLS value.<br>
 The value of each element is the 'event' of that position, and this is actually the index of array 'eventData' defined in my-event-data.js.<br>
 Most elements of mapData have value 0 or 1. 0 means floor (walkable). 1 means wall (not walkable). But some elements have other values. This means that positions have a specific event.
 MAP_IMAGE_FILENAME is the name of image file of the map. The file needs to be in {dungeon.js root}/img folder. (ex. {dungeon.js root}/img/map.png )
@@ -41,12 +41,13 @@ Each element of the array has properties shown below.<br>
 The function returns the index of tile of this event. <br>
 Tile means a piece of a map image. As you see in {dungeon.js root}/img/map.png, all pieces of a certain map are need to be together in one file, and ordered horizonaly.<br>
 Index 0 indicates the leftmost piece, and increases to right.<br>
-If getTile of an event returns the index of a tree image, a map position that has this event shows tree image.<br>
+If getTile of an event returns the index of a tree image, map positions that have this event all shows tree image.<br>
 ##### isWalkable
 The function returns weather a map position that has this event is walkable or not.<br>
 If Walkable, the player character can walk that position.<br>
 ##### hasMessage
-The boolean value indicates weather this event has a message to show.<br>
+The boolean value indicates weather this event has a message to show or not.<br>
+Walkable events and unwalkable events both can have a message. When an unwakable event has a message, the message is shown when player operate to move towards the position. The charactor remains former position, because the target position is not walkable, but the message of target position is shown. (ex. stone boards in sample)
 ##### title
 The title of the message of this event.
 ##### msg

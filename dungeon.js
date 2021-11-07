@@ -175,6 +175,11 @@ function movePlayer(px, py) {
 	
 	if (isDead) return false;
 
+	// same position
+	if(px === playerX && py === playerY){
+		return false;
+	}
+
 	// can't go out of the map
 	if (px < 0 || px >= MAP_COLS) return false;
 	if (py < 0 || py >= MAP_ROWS) return false;
