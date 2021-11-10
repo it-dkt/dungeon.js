@@ -4,7 +4,7 @@
 
 // constants
 const MAP_BLOCK_WIDTH = 32;	// pixel
-const IMG_NUM_TO_LOAD = 2 + ENEMY_IMAGES.length;	// map, player and enemies
+const IMG_NUM_TO_LOAD = 2 + ENEMY_IMAGES.length + OBJECT_IMAGES.length;	// map, player and other images
 const DIRECTION_LEFT = 1;
 const DIRECTION_RIGHT = 2;
 const DIRECTION_UP = 3;
@@ -16,6 +16,7 @@ const ADDITIONAL_DIRECTION_NUM = 2;
 let imgMap;
 let imgPlayer;
 let imgEnemies = [];
+let imgObjects = [];
 let playerX, playerY;
 let numLoadedFiles;
 let isEnemyMoved = false;
@@ -70,11 +71,14 @@ function loadImages() {
 		initGame();
 	};
 	
-	// load tip images
+	// load images
 	imgMap = loadImage("../img/" + MAP_IMAGE_FILENAME, file_onload);
 	imgPlayer = loadImage("../img/player.png", file_onload);
 	for(var i=0; i<ENEMY_IMAGES.length; i++){
 		imgEnemies[i] = loadImage("../img/" + ENEMY_IMAGES[i], file_onload);
+	}
+	for(var i=0; i<OBJECT_IMAGES.length; i++){
+		imgObjects[i] = loadImage("../img/" + OBJECT_IMAGES[i], file_onload);
 	}
 }
 
@@ -90,6 +94,16 @@ function initGame() {
 	playerX = 1;
 	playerY = 1;
 
+	// If there are any events that have those positions, update mapData of that position
+	for(var i=0; i<eventData.length; i++){
+		var evt = eventData[i];
+        if(evt && evt.posX && evt.posY){
+            var idx = evt.posX + evt.posY * MAP_COLS;
+			// keep the old event of the position
+			eventData[i].oldEvent = mapData[idx];
+            mapData[idx] = i;
+        }
+	}
 	drawMap();
 
 	doInterval();
@@ -198,23 +212,24 @@ function movePlayer(px, py) {
 
 	// check collision with enemies
 	checkCollision();
-	
-	// exec position event
-	if (eventData[event_no].hasMessage)
-	{
-		// exec dispatcher function if defined, returns event number to execute
-		if(typeof(eventData[event_no].dispatcher) == "function") {
-			event_no = eventData[event_no].dispatcher();
-		}
-		executeEvent(event_no);
+
+	// exec dispatcher function if defined, returns event number to execute
+	if(typeof(eventData[event_no].dispatcher) == "function") {
+		event_no = eventData[event_no].dispatcher();
 	}
+	executeEvent(event_no);
 	
 	return isMoved;
 }
 
 function executeEvent(event_no) {
 
-	showMessage(eventData[event_no].title, eventData[event_no].msg, eventData[event_no].onClose);
+	if(eventData[event_no].hasMessage()){
+		showMessage(eventData[event_no].title, eventData[event_no].msg, eventData[event_no].onClose);
+	}else{
+		// If no message, immediately execute onClose().
+		eventData[event_no].onClose();
+	}
 }
 
 // redraw player image periodically
@@ -371,6 +386,8 @@ function drawPlayerChar() {
 function drawMap() {
 	var mapCanvas = getElementById("mapCanvas");
 	var mapContext = mapCanvas.getContext("2d");
+	var objCanvas = getElementById("objectCanvas");
+	var objContext = objCanvas.getContext("2d");
 
 	mapContext.fillStyle = "gray";
 	mapContext.fillRect(0,0,320,320);
@@ -384,6 +401,7 @@ function drawMap() {
 			var cy = playerY + y - 4;
 
 			var eventIdx = getMapEvent(cx, cy);
+			//console.log(`eventIdx=${eventIdx}`)
 			var tileIdx = eventData[eventIdx].getTile();
 	       
 			var sx = tileIdx * MAP_BLOCK_WIDTH;
@@ -393,6 +411,15 @@ function drawMap() {
 			mapContext.drawImage(imgMap,
 				sx, sy, MAP_BLOCK_WIDTH, MAP_BLOCK_WIDTH, 
 				dx, dy, MAP_BLOCK_WIDTH, MAP_BLOCK_WIDTH);
+
+			// clear and redraw objects
+			objContext.clearRect(dx, dy, MAP_BLOCK_WIDTH, MAP_BLOCK_WIDTH);
+			if(eventData[eventIdx].objectImgIdx >= 0){
+				var imgObject = imgObjects[eventData[eventIdx].objectImgIdx];
+				objContext.drawImage(imgObject,
+					0, 0, MAP_BLOCK_WIDTH, MAP_BLOCK_WIDTH, 
+					dx, dy, MAP_BLOCK_WIDTH, MAP_BLOCK_WIDTH);
+			}
 		}
 	}
 }
@@ -437,9 +464,9 @@ function getMapIdx(x, y) {
 }
 
 function getMapEvent(x, y) {
-	// return 1 means not walkable
-	if (x < 0 || x >= MAP_COLS) return 1;
-	if (y < 0 || y >= MAP_ROWS) return 1;
+	// outsideOfMapEventIndex has to be not walkable
+	if (x < 0 || x >= MAP_COLS) return OUT_OF_MAP_EVENT_IDX;
+	if (y < 0 || y >= MAP_ROWS) return OUT_OF_MAP_EVENT_IDX;
 
 	var i = (y * MAP_COLS) + x;
 	return mapData[i];
