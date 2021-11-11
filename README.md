@@ -46,7 +46,7 @@ If getTile of an event returns the index of a tree image, map positions that hav
 The function returns weather a map position that has this event is walkable or not.<br>
 If Walkable, the player character can walk that position.<br>
 ##### hasMessage
-The boolean value indicates weather this event has a message to show or not.<br>
+The function returns boolean indicates weather this event has a message to show or not.<br>
 Walkable events and unwalkable events both can have a message. When an unwakable event has a message, the message is shown when player operate to move towards the position. The charactor remains former position, because the target position is not walkable, but the message of target position is shown. (ex. stone boards in sample)
 ##### title
 The title of the message of this event.

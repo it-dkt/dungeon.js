@@ -1,14 +1,53 @@
+/**
+ * variables
+ */
+ let isStoneOnTheTarget = false;
 
-// イベント定義
+ const fSimpleTrue = function(){ return true; }
+ const fSimpleFalse = function(){ return false; }
+ 
+ const startMessage = 'Escape from this woods.<br>You can move a stone!';
+ const restartGame = () => {
+     document.location.href = '../index.html';
+ }
+ const OUT_OF_MAP_EVENT_IDX = 2;
+ const OBJECT_IMAGES = [
+     'woods-stone.png'
+ ]
+ 
+ /**
+  * events
+  */
+ const eventData = [];
+ eventData[0] = { getTile: function(){ return 0; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+ eventData[1] = { getTile: function(){ return 1; }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+ eventData[2] = { getTile: function(){ return 2; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+ eventData[3] = { getTile: function(){ return 3; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+ 
+ // the movable stone
+ eventData[4] = { getTile: function(){ return 1; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', 
+     onClose: function(){ moveStone(4) }, posX: 4, posY: 4, objectImgIdx: 0, oldEvent: null };
+ // the target position to move the stone on
+ eventData[5] = { getTile: function(){ return 4 }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+ // the door (hidden initially)
+ eventData[6] = {
+     getTile: function(){ return isStoneOnTheTarget ? 5 : 3; },
+     isWalkable: function(){ return isStoneOnTheTarget; },
+     hasMessage: fSimpleFalse, title: '', msg: '',
+     onClose: function(){
+         if(isStoneOnTheTarget){
+             restartGame();
+         }
+     } };
+
+
 const moveStone = function(myIndex){
 
+    // Is the new position is movable?
     function isMovable(x, y){
-        // 移動先のイベント番号取得
         let nextEvent = getMapEvent(x, y);
-        // 移動可能なら
         if(nextEvent != OUT_OF_MAP_EVENT_IDX && eventData[nextEvent].isWalkable()){
             for(var i=0; i<enemies.length; i++){
-                // 敵がいる場所はNG
                 if(x == enemies[i].posX && y == enemies[i].posY){
                     return false;
                 }
@@ -19,25 +58,23 @@ const moveStone = function(myIndex){
     };
 
     var myEvent = eventData[myIndex];
-
     var myTmpX = myEvent.posX;
     var myTmpY = myEvent.posY;
-
     var isMove = false;
-    //playerX, playerY
+
     if(playerY == myTmpY){
         if(playerX < myTmpX){
-            // 左から押された
+            // pushed from left
             if(isMovable(myTmpX + 1, myTmpY)){
-                // 移動可能なら主人公と自分の座標をx+1
+                // move the player and the stone to right
                 myTmpX++;
                 playerX++;
                 isMove = true;
             }
         }else{
-            // 右から押された
+            // pushed from right
             if(isMovable(myTmpX - 1, myTmpY)){
-                // 移動可能なら主人公と自分の座標をx-1
+                // move the player and the stone to left
                 myTmpX--;
                 playerX--;
                 isMove = true;
@@ -45,96 +82,62 @@ const moveStone = function(myIndex){
        }
     }else if(playerX == myTmpX){
         if(playerY < myTmpY){
-            // 上から押された
+            // pushed from top
             if(isMovable(myTmpX, myTmpY + 1)){
-                // 移動可能なら主人公と自分の座標をy+1
+                // move the player and the stone down
                 myTmpY++;
                 playerY++;
                 isMove = true;
             }
         }else{
-            // 下から押された
+             // pushed from bottm
             if(isMovable(myTmpX, myTmpY - 1)){
-                // 移動可能なら主人公と自分の座標をy-1
+                // move the player and the stone up
                 myTmpY--;
                 playerY--;
                 isMove = true;
             }
        }
     }
-    
+
+    // after moved
 	if(isMove){
-        // 自分の座標移動
-    
+        // restore event index of the position the stone was before
         var mapIdxOld = getMapIdx(myEvent.posX, myEvent.posY);
-        // 以前いた位置の状態を復元する
         mapData[mapIdxOld] = myEvent.oldEvent;
 
-        // 座標を移動
+        // update the stone's position
         myEvent.posX = myTmpX;
         myEvent.posY = myTmpY;
 
+        // get the event index of the new position
         var mapIdxNew = getMapIdx(myEvent.posX, myEvent.posY);
-
         var targetEventIdx = mapData[mapIdxNew];
 
         if(targetEventIdx == 5){
-            // 乗せた
-            stoneOnTheTarget();
+            isStoneOnTheTarget = true;
+            shake();
+        }else{
+            if(myEvent.oldEvent == 5){
+                // when leave the target index also
+                shake();
+            }
+            isStoneOnTheTarget = false;
         }
 
-        // 移動先のevent番号を保持する（復元用）
+        // keep the old event index of the new position 
         myEvent.oldEvent = mapData[mapIdxNew];
-        // 移動先のチップ番号を保持する（背景表示用）
+        // keep the getTile() of the new position for drawing background
         myEvent.getTile = eventData[myEvent.oldEvent].getTile;
-        // mapデータ更新
+
+        // update map
         mapData[mapIdxNew] = myIndex;
-        
-        // 背景描画
         drawMap();
     }
-
 }
 
-let isStoneOnTheTarget = false;
-function stoneOnTheTarget(){
-    shake();
-    isStoneOnTheTarget = true;
-}
 
-const fSimpleTrue = function(){ return true; }
-const fSimpleFalse = function(){ return false; }
 
-const startMessage = 'Escape from this woods.<br>Don\'t be catched by the monster!';
-const restartGame = () => {
-    document.location.href = '../index.html';
-}
-
-//
-// Mapイベント
-//
-const eventData = [];
-eventData[0] = { getTile: function(){ return 0; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-eventData[1] = { getTile: function(){ return 1; }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-eventData[2] = { getTile: function(){ return 2; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-eventData[3] = { getTile: function(){ return 3; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-eventData[4] = { getTile: function(){ return 1; }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', 
-    onClose: function(){ moveStone(4) }, posX: 4, posY: 4, objectImgIdx: 0, oldEvent: null };
-eventData[5] = { getTile: function(){ return 4 }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-eventData[6] = {
-    getTile: function(){ return isStoneOnTheTarget ? 5 : 3; },
-    isWalkable: function(){ return isStoneOnTheTarget; },
-    hasMessage: fSimpleFalse, title: '', msg: '',
-    onClose: function(){
-        if(isStoneOnTheTarget){
-            restartGame();
-        }
-    } };
-
-const OUT_OF_MAP_EVENT_IDX = 0;
-const OBJECT_IMAGES = [
-    'woods-stone.png'
-]
 
 
 
