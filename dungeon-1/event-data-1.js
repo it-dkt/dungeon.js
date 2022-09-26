@@ -16,32 +16,6 @@ const onGameClear = function(){
 var isCollpsed = false;
 var hasKey = false;
 
-//
-// eventData 
-//
-const eventData = [];
-// floor
-eventData[0] = { getTile: function(){ return 0 }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-// wall
-eventData[1] = { getTile: function(){ return 1 }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
-
-// boards
-eventData[2] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'There are three stone boards in this dungeon', onClose: onRead1 };
-eventData[3] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'You need a key to open a door.', onClose: onRead2 };
-eventData[4] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'If you have read all the boards, you have a way.', onClose: onRead3 };
-
-// wall could be collapse
-eventData[5] = { getTile:  getWallOrFloorTile, isWalkable: function(){ return isCollpsed; }, hasMessage: fSimpleFalse, dispatcher: null, title: '', msg: '', onClose: function(){} };
-
-// treasure box (not opened yet)
-eventData[6] = { getTile:  getTreasureTile, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_treasure, title: 'treasure box', msg: 'You found a key in the box!', onClose: function(){ hasKey = true; drawMap(); } };
-// treasure box (open)
-eventData[7] = { getTile:  getTreasureTile, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, dispatcher: null, title: 'treasure box', msg: 'There is nothing in the box any more.', onClose: function(){} };
-
-// door (when the player don't have the key)
-eventData[8] = { getTile:  function(){ return 5 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_door, title: 'door', msg: 'The door seems to be locked.', onClose: function(){} };
-// door (when the player has the key)
-eventData[9] = { getTile:  function(){ return 5 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_door, title: 'door', msg: 'You opened the door!', onClose: onGameClear };
 
 // board 1 event
 var board1 = 0;
@@ -101,3 +75,30 @@ var dispatcher_door = function (){
 	}
 	return 8;
 }
+
+//
+// eventData 
+//
+const eventData = [];
+// floor
+eventData[0] = { getTile: function(){ return 0 }, isWalkable: fSimpleTrue, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+// wall
+eventData[1] = { getTile: function(){ return 1 }, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, title: '', msg: '', onClose: function(){} };
+
+// boards
+eventData[2] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'There are three stone boards in this dungeon', onClose: onRead1 };
+eventData[3] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'You need a key to open a door.', onClose: onRead2 };
+eventData[4] = { getTile:  function(){ return 2 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: null, title: 'board', msg: 'If you have read all the boards, you have a way.', onClose: onRead3 };
+
+// wall could be collapse
+eventData[5] = { getTile:  getWallOrFloorTile, isWalkable: function(){ return isCollpsed; }, hasMessage: fSimpleFalse, dispatcher: null, title: '', msg: '', onClose: function(){} };
+
+// treasure box (not opened yet)
+eventData[6] = { getTile:  getTreasureTile, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_treasure, title: 'treasure box', msg: 'You found a key in the box!', onClose: function(){ hasKey = true; drawMap(); } };
+// treasure box (open)
+eventData[7] = { getTile:  getTreasureTile, isWalkable: fSimpleFalse, hasMessage: fSimpleFalse, dispatcher: null, title: 'treasure box', msg: 'There is nothing in the box any more.', onClose: function(){} };
+
+// door (when the player don't have the key)
+eventData[8] = { getTile:  function(){ return 5 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_door, title: 'door', msg: 'The door seems to be locked.', onClose: function(){} };
+// door (when the player has the key)
+eventData[9] = { getTile:  function(){ return 5 }, isWalkable: fSimpleFalse, hasMessage: fSimpleTrue, dispatcher: dispatcher_door, title: 'door', msg: 'You opened the door!', onClose: onGameClear };
