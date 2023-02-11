@@ -6,7 +6,7 @@ https://main.d31hnum9uhgtm2.amplifyapp.com/
 <dl>
   <dt>How to play (on PC)</dt>
   <dd>Move player charactor by allow keys(← → ↑ ↓) on keyboard. If some message is shown, read it, then press Enter (or any) key to close it.</dd>
-  <dt>How to play (on smartphone)</dt>
+  <dt>How to play (on iPhone, Android)</dt>
   <dd>Move player charactor by touching 4 direction buttons shown on screen. If some message is shown, read it, then touch the message to close it.</dd>
 </dl>
 
@@ -19,8 +19,8 @@ First, clone this repository.<br>
 Open index.html on your browser, and click 'Sample dungeon' link. It links dungeon-1.html in dungeon-1 folder. This is the same as the sample game shown above.<br>
 Play sample game and enjoy it!<br>
 Then, create a copy of the dungeon-1 folder, and rename the folder itself and files in the folder. (ex: dungeon-1 to my-dungon, and dungeon-1.html to my-dungeon.html).<br>
-Next, open my-dungon.html (or the file you renamed from dungeon-1.html) on your code editor (like VSCode). Then edit the script filenames as you renamed, and save it.<br>
-Open mydungon.html on your browser. If you can play the same sample game as you played first, with no javascript errors, you succeed to copy resources, and you are ready to make your own game!
+Next, open my-dungon.html (the file you renamed from dungeon-1.html) on your code editor (like VSCode). Then edit the filenames written in 'src' attributes of the script tags as you renamed, and save it.<br>
+Open my-dungon.html on your browser. If you can play the same sample game as you played first, with no javascript errors, you succeed to copy resources, and you are ready to make your own game!
 
 ### Files to edit for your own game
 Suppose you renamed *dungeon-1* folder to *my-dungeon*, and renamed the files in it by the same rule.<br>
