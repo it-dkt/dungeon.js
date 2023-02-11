@@ -30,21 +30,27 @@ window.onload = function () {
 	// add keydown event handler
 	document.addEventListener('keydown', document_onkeydown);
 
-	// create allow key (for smart phone) DOM elements
-	$('#controller-container').append($('<div>', { id: 'up-key-container' }));
-	$('#controller-container').append($('<div>', { id: 'horizonal-key-container' }));
-	$('#controller-container').append($('<div>', { id: 'down-key-container' }));
-	
-	$('#up-key-container').append($('<div>', { id: 'up-key' }));
-	$('#horizonal-key-container').append($('<div>', { id: 'left-key' })).append($('<div>', { id: 'right-key' }));
-	$('#down-key-container').append($('<div>', { id: 'down-key' }));
-	
-	// add allow key event handler
-	createDirectionKeyEvent(getElementById('up-key'));
-	createDirectionKeyEvent(getElementById('down-key'));
-	createDirectionKeyEvent(getElementById('left-key'));
-	createDirectionKeyEvent(getElementById('right-key'));
+	if (/Android|iPhone/i.test(navigator.userAgent)) {
+		// This checks if the current device is in fact mobile
 
+		// create allow key (for smart phone) DOM elements
+		$('#controller-container').append($('<div>', { id: 'up-key-container' }));
+		$('#controller-container').append($('<div>', { id: 'horizonal-key-container' }));
+		$('#controller-container').append($('<div>', { id: 'down-key-container' }));
+		
+		$('#up-key-container').append($('<div>', { id: 'up-key' }));
+		$('#horizonal-key-container').append($('<div>', { id: 'left-key' })).append($('<div>', { id: 'right-key' }));
+		$('#down-key-container').append($('<div>', { id: 'down-key' }));
+		
+		// add allow key event handler
+		createDirectionKeyEvent(getElementById('up-key'));
+		createDirectionKeyEvent(getElementById('down-key'));
+		createDirectionKeyEvent(getElementById('left-key'));
+		createDirectionKeyEvent(getElementById('right-key'));
+	}else{
+		// for PC
+		$('#controller-container').html('<p>Use ↑↓←→ keys</p>')
+	}
 };
 
 function createDirectionKeyEvent(element) {
