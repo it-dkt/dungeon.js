@@ -5,7 +5,7 @@
 https://main.d31hnum9uhgtm2.amplifyapp.com/
 <dl>
   <dt>How to play (on PC)</dt>
-  <dd>Move player charactor by allow keys(← → ↑ ↓) on keyboard. If some message is shown, read it, then press Enter (or any) key to close it.</dd>
+  <dd>Move player charactor by arrow keys(← → ↑ ↓) on keyboard. If some message is shown, read it, then press Enter (or any) key to close it.</dd>
   <dt>How to play (on iPhone, Android)</dt>
   <dd>Move player charactor by touching 4 direction buttons shown on screen. If some message is shown, read it, then touch the message to close it.</dd>
 </dl>
@@ -43,7 +43,7 @@ Tile means a piece of a map image. As you see in {dungeon.js root}/img/map.png, 
 Index 0 indicates the leftmost piece, and increases to right.<br>
 If getTile of an event returns the index of a tree image, map positions that have this event all shows tree image.<br>
 ##### isWalkable
-The function returns weather a map position that has this event is walkable or not.<br>
+The function returns whether a map position that has this event is walkable or not.<br>
 If Walkable, the player character can walk that position.<br>
 ##### hasMessage
 The function returns boolean indicates weather this event has a message to show or not.<br>
